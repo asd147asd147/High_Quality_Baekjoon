@@ -2,54 +2,46 @@
 
 using namespace std;
 
-#define INF 600000000
-
-struct cmp{
-    bool operator()(tuple<int,int,int> &a, tuple<int,int,int> &b){
-        return get<2>(a) >= get<2>(b);
-    }
-};
+#define INF 1000000000
 
 int main(){
-
-    int N, M;
-    int init, finish;
-    cin >> N;
-    cin >> M;
-
-    vector<vector<tuple<int,int,int>>> v(M+1);
-    int visited[M+1] = {0,};
-    unsigned long long dist[M+1];
-    for(auto &s : dist){
-        s = INF;
-    }
+    int N, M, init, finish;
+    cin >> N >> M;
+    vector<multimap<int,int>> city(N+1);
     for(int i = 0; i < M; i++){
         int a,b,c;
         cin >> a >> b >> c;
-        v[a].push_back(make_tuple(a,b,c));
+        city[a].insert({b,c});
     }
-
     cin >> init >> finish;
-    priority_queue<tuple<int,int,int>,vector<tuple<int,int,int>>, cmp> pq;
-    dist[init] = 0;
 
-    for(auto s : v[init]){
-        pq.push(s);
+    long long dist[N+1];
+    bool visited[N+1] = {false,};
+    for(int i = 0; i < N+1; i++)
+        dist[i] = INF;
+
+    dist[init] = 0;
+    priority_queue<pair<int,int>> pq;
+    for(auto m : city[init]){
+        pq.push({-m.second, m.first});
     }
-    visited[init] = 1;
+    visited[init] = true;
     while(!pq.empty()){
-        tuple<int,int,int> temp = pq.top();
-        if(dist[get<1>(temp)] > dist[get<0>(temp)] + get<2>(temp)){
-            dist[get<1>(temp)] = dist[get<0>(temp)] + get<2>(temp);
-        }
+        auto m = pq.top();
         pq.pop();
-        if(visited[get<1>(temp)] == 0){
-            visited[get<1>(temp)] = 1;
-            for(auto s : v[get<1>(temp)]){
-                pq.push(s);
+        if(dist[m.second] >= -m.first){
+            dist[m.second] = -m.first;
+            if(!visited[m.second]){
+                visited[m.second] = true;
+                for(auto c : city[m.second]){
+                    pq.push({m.first-c.second, c.first});
+                }
             }
         }
     }
+
     cout << dist[finish];
+
+
 	return 0;
 }

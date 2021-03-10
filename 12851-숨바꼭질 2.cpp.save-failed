@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    vector<pair<int,int>> visited(100001,{100000,0});
+    int N,M;
+    cin >> N >> M;
+    queue<pair<int,int>> bfs;
+    bfs.push({N,0});
+    visited[N] = {0,1};
+    int ans = 0;
+    bool vaild = true;
+    while(!bfs.empty()){
+        auto pos = bfs.front();
+        bfs.pop();
+        if(pos.first == M){
+            vaild = false;
+            ans++;
+        }
+        if(pos.first!=0){
+            if(vaild) bfs.push({pos-1,ans+1});
+            if(visited[pos-1].first >= ans){
+                visited[pos-1].first = pos.first;
+                visited[pos-1].second += visited[pos].second;
+            }
+        }
+        if(pos!=100000){
+            if(vaild) bfs.push({pos+1,ans+1});
+            if(visited[pos+1].first >= ans){
+                visited[pos+1].first = pos.first;
+                visited[pos+1].second += visited[pos].second;
+            }
+        }
+        if(0 < 2*pos && 2*pos <= 100000 && pos < M){
+            if(vaild)  bfs.push({pos*2,ans+1});
+            if(visited[pos*2].first >= ans){
+                visited[pos*2].first = pos.first;
+                visited[pos*2].second += visited[pos].second;
+            }
+        }
+    }
+    cout << ans << "\n" << visited[M];
+
+	return 0;
+}
