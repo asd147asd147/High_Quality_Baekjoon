@@ -9,17 +9,15 @@ int main(){
     cin.tie(0);
     cout.tie(0);
     cin >> N >> M;
-    set<char> remind;
-    vector<set<char>> word;
-    for(char a = 'a'; a <= 'z'; a++)
-        remind.insert(a);
-
+    bitset<26> remind;
+    vector<bitset<26>> word;
+    remind.set();
     for(int i = 0; i < N; i++){
         string s;
         cin >> s;
-        set<char> tmp;
+        bitset<26> tmp;
         for(int j = 0; j < s.size(); j++){
-            tmp.insert(s[j]);
+            tmp.set(s[j]-'a',true);
         }
         word.push_back(tmp);
     }
@@ -28,23 +26,19 @@ int main(){
         char x;
         cin >> o >> x;
         if(o == 1){
-            remind.erase(x);
+            remind.set(x-'a',false);
         }
         else{
-            remind.insert(x);
+            remind.set(x-'a',true);
         }
 
-        if(remind.size() == 26){
+        if(remind.all()){
             cout << word.size() << "\n";
         }
         else{
             int cnt = 0;
             for(int j = 0; j < word.size(); j++){
-                set<char> tmp;
-                set_difference(word[j].begin(),word[j].end(),
-                               remind.begin(),remind.end(),
-                               inserter(tmp,tmp.begin()));
-                if(tmp.empty()) cnt++;
+                if((word[j] & remind) == word[j]) cnt++;
             }
             cout << cnt << "\n";
         }
