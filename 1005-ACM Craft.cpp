@@ -1,47 +1,47 @@
 #include <bits/stdc++.h>
-#define INF 100000001
+
 using namespace std;
 
 void solve(){
     int cost[1001];
-    int t[1001];
+    int sum_cost[1001] = {0,};
+    int t[1001] = {0,};
     int N, K, W;
-    unordered_multimap<int,int> adj;
     cin >> N >> K;
+    vector<vector<int>> graph(N+1);
     for(int i = 1; i <= N; i++)
         cin >> cost[i];
 
     for(int i = 0; i < K; i++){
         int a,b;
         cin >> a >> b;
-        adj.insert({a,b});
-        t[b] = INF;
+        graph[a].emplace_back(b);
+        t[b]++;
     }
     cin >> W;
     queue<int> q;
     for(int i = 1; i <= N; i++){
-        cout << t[i] << " ";
         if(!t[i]){
-            t[i] = cost[i];
             q.push(i);
-            return;
+            sum_cost[i] = cost[i];
         }
     }
-    cout << endl;
-
     while(!q.empty()){
         auto p = q.front();
-        cout << p << endl;
-        auto a = adj.equal_range(p);
-        for(auto i = a.first; i != a.second; i++){
-            t[i->second] = t[p] + cost[i->second];
-            q.push(i->second);
-        }
+        q.pop();
         if(p == W){
-            cout << t[W] << "\n";
+            cout << sum_cost[p] << "\n";
             return;
         }
+        for(auto g : graph[p]){
+            t[g]--;
+            sum_cost[g] = max(sum_cost[g], sum_cost[p] + cost[g]);
+            if(!t[g]){
+                q.push(g);
+            }
+        }
     }
+    cout << cost[W] << "\n";
 }
 
 int main(){
