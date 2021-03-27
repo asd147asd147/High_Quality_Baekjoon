@@ -12,7 +12,6 @@ void down(vvc,int,pii,pii);
 void left(vvc,int,pii,pii);
 void right(vvc,int,pii,pii);
 void (*fp[4])(vvc, int, pii, pii) = {up, down, left, right};
-set<pair<pii,pii>> visited;
 
 bool check_pre(pii& R, pii& B, int c){
     if(c==0){
@@ -56,12 +55,9 @@ void up(vvc vec, int idx, pii R, pii B){
         ans = min(ans,tmp);
         return;
     }
-    if(visited.find({pos[0],pos[1]})!=visited.end()){
-        return;
-    }
-    for(int i = 0; i < 4; i++){
-        fp[i](vec, idx+1, pos[1], pos[0]);
-    }
+    fp[1](vec, idx+1, pos[1], pos[0]);
+    fp[2](vec, idx+1, pos[1], pos[0]);
+    fp[3](vec, idx+1, pos[1], pos[0]);
 }
 void down(vvc vec, int idx, pii R, pii B){
     if(idx == 10)
@@ -96,12 +92,9 @@ void down(vvc vec, int idx, pii R, pii B){
         ans = min(ans,tmp);
         return;
     }
-    if(visited.find({pos[0],pos[1]})!=visited.end()){
-        return;
-    }
-    for(int i = 0; i < 4; i++){
-        fp[i](vec, idx+1, pos[1], pos[0]);
-    }
+    fp[0](vec, idx+1, pos[1], pos[0]);
+    fp[2](vec, idx+1, pos[1], pos[0]);
+    fp[3](vec, idx+1, pos[1], pos[0]);
 }
 void left(vvc vec, int idx, pii R, pii B){
     if(idx == 10)
@@ -137,12 +130,9 @@ void left(vvc vec, int idx, pii R, pii B){
 
         return;
     }
-    if(visited.find({pos[0],pos[1]})!=visited.end()){
-        return;
-    }
-    for(int i = 0; i < 4; i++){
-        fp[i](vec, idx+1, pos[1], pos[0]);
-    }
+    fp[0](vec, idx+1, pos[1], pos[0]);
+    fp[1](vec, idx+1, pos[1], pos[0]);
+    fp[3](vec, idx+1, pos[1], pos[0]);
 }
 void right(vvc vec, int idx, pii R, pii B){
     if(idx == 10)
@@ -177,12 +167,9 @@ void right(vvc vec, int idx, pii R, pii B){
         ans = min(ans,tmp);
         return;
     }
-    if(visited.find({pos[0],pos[1]})!=visited.end()){
-        return;
-    }
-    for(int i = 0; i < 4; i++){
-        fp[i](vec, idx+1, pos[1], pos[0]);
-    }
+    fp[0](vec, idx+1, pos[1], pos[0]);
+    fp[1](vec, idx+1, pos[1], pos[0]);
+    fp[2](vec, idx+1, pos[1], pos[0]);
 }
 
 int main(){
@@ -208,7 +195,6 @@ int main(){
             }
         }
 	}
-	visited.insert({B,R});
     for(int i = 0; i < 4; i++){
         fp[i](vec, 0, R, B);
     }
