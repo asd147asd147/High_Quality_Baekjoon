@@ -20,3 +20,5 @@ Algorithm Problem Solving
 - Aho-corasick
 - Trie Tree
 - 슬라이딩 윈도우
+- Needleman–Wunsch algorithm
+- Smith–Waterman algorithm
