@@ -17,3 +17,8 @@ Algorithm Problem Solving
 - 위상정렬
 - 배낭문제
 - LCA
+- Aho-corasick
+- Trie Tree
+- 슬라이딩 윈도우
+- Needleman–Wunsch algorithm
+- Smith–Waterman algorithm
