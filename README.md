@@ -22,3 +22,4 @@ Algorithm Problem Solving
 - 슬라이딩 윈도우
 - Needleman–Wunsch algorithm
 - Smith–Waterman algorithm
+- Kosaraju
