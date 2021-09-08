@@ -1,48 +1,37 @@
 #include <bits/stdc++.h>
-
+#define mod 1000000000
 using namespace std;
 
 int N;
+int dp[101][10][1<<10];
 unsigned long long ans = 0;
-
-void stair(string s, int check){
-    //cout << s << " " << check << endl;
-    if((int)s.size() == N){
-        if(!check){
-            ans++;
-            ans %= 1000000000;
-        }
-
-        return;
-    }
-    int b = s.back() - '0';
-    if(b == 0){
-        stair(s+"1", check & ~(1 << 1));
-    }
-    else if(b == 9){
-        stair(s+"8", check & ~(1 << 8));
-    }
-    else{
-        string post1 = "";
-        post1 += '0'+b-1;
-        string post2 = "";
-        post2 += '0'+b+1;
-        stair(s+post1, check & ~(1 << (b-1)));
-        stair(s+post2, check & ~(1 << (b+1))); 
-    }
-}
-
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
     cin >> N;
-    for(int i = 1; i <= 9; i++){
-        string s = "";
-        s += '0' + i;
-        int check = 1023;
-        check &= ~(1 << i);
-        stair(s, check);
+
+    for(int i = 1; i < 10; i++){
+        dp[1][i][1 << i] = 1;        
+    }
+    for(int i = 2; i <= N; i++){
+        for(int j = 0; j <= 9; j++){
+            for(int k = 0; k < (1 << 10); k++){
+                if(j == 0){
+                    dp[i][j][k | (1 << 0)] = (dp[i][j][k | (1 << 0)] + dp[i-1][1][k]) % mod;
+                }
+                else if(j == 9){
+                    dp[i][j][k | (1 << 9)] = (dp[i][j][k | (1 << 9)] + dp[i-1][8][k]) % mod; 
+                }
+                else{
+                    dp[i][j][k | 1 << j] = (dp[i][j][k | 1 << j] + dp[i-1][j-1][k]) % mod; 
+                    dp[i][j][k | 1 << j] = (dp[i][j][k | 1 << j] + dp[i-1][j+1][k]) % mod;  
+                }
+            }
+        }
+    }
+    for(int i = 0; i <= 9; i++){
+        ans = (ans + dp[N][i][1023]) % mod;
     }
     cout << ans;
 
