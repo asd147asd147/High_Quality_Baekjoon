@@ -24,3 +24,4 @@ Algorithm Problem Solving
 - Smith–Waterman algorithm
 - Kosaraju
 - Flood Fill
+- Binary Index Tree
