@@ -3,48 +3,33 @@
 using namespace std;
 
 int N;
-long long d;
 vector<long long> vec;
 
-int main(){
-	ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
-	cin >> N >> d;
-	vec.resize(N);
-	for(int i = 0; i < N; i++){
-        cin >> vec[i];
-	}
-
-	long long M = -30'000'000'000'000'010LL, m = 30'000'000'000'000'010LL;
-
+inline long double dist(long long d){
+    long long M = -1e17, m = 1e17;
 	long long init = vec[0];
-
 	for(long long i = 0; i < N; i++){
         long long temp = init+i*d - vec[i];
         M = max(M, temp);
         m = min(m, temp);
 	}
+	long double ans = ((long double)M-(long double)m)/2.0;
+	return ans = round(abs(ans)*10.0) / 10.0;
+}
 
-	double ans1 = ((double)M-(double)m)/2.0;
-	ans1 = round(abs(ans1)*10.0) / 10.0;
-
-    M = -30'000'000'000'000'010LL, m = 30'000'000'000'000'010LL;
-
-	init = vec[0];
-
-	for(long long i = 0; i < N; i++){
-        long long temp = init-i*d - vec[i];
-        M = max(M, temp);
-        m = min(m, temp);
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+	long long d;
+	cin >> N >> d;
+	vec.resize(N);
+	for(int i = 0; i < N; i++){
+        cin >> vec[i];
 	}
-    double ans2 = ((double)M-(double)m)/2.0;
-	ans2 = round(abs(ans2)*10.0) / 10.0;
-
 	cout << fixed;
     cout.precision(1);
-    cout << ans1 << " " << ans2 <<endl;
-	cout << min(ans1, ans2);
+	cout << min(dist(d), dist(-d));
 
 	return 0;
 }
