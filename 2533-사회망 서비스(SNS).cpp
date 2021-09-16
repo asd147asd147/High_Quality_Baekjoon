@@ -5,26 +5,19 @@ using namespace std;
 int N;
 
 vector<vector<int>> vec;
+int dp[1000001][2];
+int visited[1000001] = {0, };
 
-int early(int idx, int flag){
-    vector<int> visited(N+1, 0);
-    int cnt = 0;
-    queue<pair<int,int>> q;
-    q.push({idx,flag});
-    while(!q.empty()){
-        auto p = q.front();
-        q.pop();
-        visited[p.first] = 1;
-        if(p.second == 1){
-            cnt++;
-        }
-        for(auto t : vec[p.first]){
-            if(!visited[t]){
-                q.push({t, !p.second});
-            }
-        }
+void early(int idx){
+    visited[idx] = 1;
+    dp[idx][0] = 1;
+
+    for(auto v : vec[idx]){
+        if(visited[v]) continue;
+        early(v);
+        dp[idx][1] += dp[v][0];
+        dp[idx][0] += min(dp[v][1], dp[v][0]);
     }
-    return cnt;
 }
 
 int main(){
@@ -40,8 +33,8 @@ int main(){
         vec[finish].push_back(start);
 	}
 
-	int ans = min(early(1,0), early(1,1));
-	cout << ans;
+	early(1);
+	cout << min(dp[1][0],dp[1][1]);
 
 	return 0;
 }
