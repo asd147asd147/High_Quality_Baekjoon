@@ -25,3 +25,4 @@ Algorithm Problem Solving
 - Kosaraju
 - Flood Fill
 - Binary Index Tree
+- Parametric Search
