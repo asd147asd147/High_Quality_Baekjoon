@@ -27,3 +27,4 @@ Algorithm Problem Solving
 - Binary Index Tree
 - Parametric Search
 - Trie
+- Tarjan's
