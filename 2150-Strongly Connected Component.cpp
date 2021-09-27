@@ -9,12 +9,12 @@ bool visited[10001] = {0,};
 vector<vector<int>> ans;
 vector<int> parent;
 stack<int> s;
+int cnt = 0;
 
 int dfs(int x){
-    parent[x] = x;
+    parent[x] = ++cnt;
     s.push(x);
-    cout << x << endl;
-    int p = x;
+    int p = parent[x];
     for(auto v : vec[x]){
         if(parent[v] == 0){
             p = min(p,dfs(v));
@@ -54,6 +54,7 @@ int main(){
         if(parent[i]==0) dfs(i);
     }
     sort(ans.begin(), ans.end());
+    cout << ans.size() << "\n";
     for(auto a : ans){
         for(auto b : a){
             cout << b << " ";
