@@ -34,7 +34,7 @@ int dijkstra(){
 
 void find_path(int x){
     if(x == S) return;
-    auto idx = lower_bound(dist[min_path[x]].begin(), dist[min_path[x]].end(), {x,0}, comp) - dist[min_path[x]].begin();
+    int idx = lower_bound(dist[min_path[x]].begin(), dist[min_path[x]].end(), make_pair(x,0), comp) - dist[min_path[x]].begin();
     dist[min_path[x]][idx] = INF;
     find_path(min_path[x]);
 }
