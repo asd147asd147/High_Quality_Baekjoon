@@ -1,10 +1,10 @@
-# High_Quality_Baekjoon
+#High_Quality_Baekjoon
 Algorithm Problem Solving
 
 ## 중요 알고리즘
 - 다익스트라
-- 벨만포드
 - 플로이드와샬
+- 벨만포드
 - 유니온파인드
 - 최소신장트리
 - 크루스칼
