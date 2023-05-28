@@ -2,71 +2,51 @@
 
 using namespace std;
 
-int N,M,K;
-long long tree[(1 << 21)+ 10] = {0,};
-int leaf;
+int N, M, K;
+long long arr[1'000'001] = {0,};
+long long num[1'000'001] = {0,};
 
-long long update(int left, int right, int idx, long long num, int pos){
-    int gap = 0;
-    if(left == right){
-        gap = num - tree[pos];
-        tree[pos] = num;
-        return gap;
+long long sum(int i){
+    long long result = 0;
+    while(i > 0){
+        result += arr[i];
+        i -= (i & -i);
     }
-    int mid = (left+right)/2;
-    if(idx <= mid){
-        gap = update(left, mid, idx, num, 2*pos);
-        tree[pos] += gap;
-    }
-    else{
-        gap = update(mid+1, right, idx, num, 2*pos+1);
-        tree[pos] += gap;
-    }
-    return gap;
+    return result;
 }
 
-long long query(int left, int right, int sub_left, int sub_right, int pos){
-    if(sub_left <= left && right <= sub_right){
-        return tree[pos];
+void update(int i, long long diff){
+    while(i <= N){
+        arr[i] += diff;
+        i += (i & -i);
     }
-    int mid = (left+right)/2;
-    long long sub_sum = 0;
-    if(sub_left <= mid){
-        sub_sum += query(left, mid, sub_left, sub_right, 2*pos);
-    }
-    if(mid+1 <= sub_right){
-        sub_sum += query(mid+1, right, sub_left, sub_right, 2*pos+1);
-    }
-    return sub_sum;
 }
 
+long long getSection(int s, int e){
+    return sum(e) - sum(s-1);
+}
 
 int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
 	cin >> N >> M >> K;
-	for(int i = 0; i <= 21; i++){
-        if(1 << i >= N){
-            leaf = 1 << i;
-            break;
-        }
-	}
+
 
 	for(int i = 1; i <= N; i++){
-	    long long n;
-        cin >> n;
-        update(1,leaf,i,n,1);
+        cin >> num[i];
+        update(i, num[i]);
 	}
 
 	for(int i = 0; i < M+K; i++){
-        long long a, b, c;
+        long long a,b,c;
         cin >> a >> b >> c;
-        if(a==1){
-            update(1,leaf,b,c,1);
+        if(a == 1){
+            update(b,c-num[b]);
+            num[b] = c;
         }
         else{
-            cout << query(1,leaf,b,c,1) << "\n";
+            cout << getSection(b,c) << "\n";
         }
 	}
 
